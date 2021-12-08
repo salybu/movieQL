@@ -24,7 +24,23 @@ const client = new ApolloClient({
       },
     },
   },
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      Movie: {
+        fields: {
+          isLiked: {
+            merge(existing, incoming) {
+              if (existing) {
+                return existing;
+              } else {
+                return incoming;
+              }
+            },
+          },
+        },
+      },
+    },
+  }),
 });
 
 export default client;
